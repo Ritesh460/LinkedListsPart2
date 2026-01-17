@@ -1,10 +1,10 @@
 #include <iostream>
 #include <cstring>
 #include "Student.h"
-Student::Student(char* first_input, char* last_input, int ID_input, float GPA_input) {
-  first = first_input;
+Student::Student(const char* first_input, const char* last_input, int ID_input, float GPA_input) {
+  first = new char[strlen(first_input)+1];  
   strcpy(first, first_input);
-  last = last_input;
+  last = new char[strlen(last_input)+1];
   strcpy(last, last_input);
   ID = ID_input;
   GPA = GPA_input;
@@ -14,16 +14,20 @@ char* Student::getFirstName() {
   return first;
 }
 
-void Student::setFirstName(char* firstname_New) {
-  first = firstname_New
+void Student::setFirstName(const char* firstname_New) {
+  delete[] first;
+  first = new char[strlen(firstname_New)+1];
+  strcpy(first, firstname_New);
 }
 
 char* Student::getLastName() {
   return last;
 }
 
-void Student::setLastName(char* lastname_New) {
-  last = lastname_New;
+void Student::setLastName(const char* lastname_New) {
+  delete[] last;
+  last = new char[strlen(lastname_New)+1];
+  strcpy(last, lastname_New);
 }
 
 int Student::getID() {
@@ -43,9 +47,8 @@ void Student::setGPA(float GPA_New) {
 }
 
 Student::~Student() {
-  delete Student;
+  delete[] first;
+  delete[] last;
 }
 
-void Student::print() {
-  cout << "Name: " << first << " " << last << ", ID: " << ID << ", GPA: " << GPA << endl;
-}
+
