@@ -14,11 +14,10 @@ void CLEAR(Node* current); //memory remember to do that this time
 int main() {
     Node* head = nullptr;
     char command[20];
-
-    while (true) {
+    bool running = true;
+    while (running) {
         cout << "Enter command (ADD, PRINT, DELETE, AVERAGE, QUIT): ";
         cin >> command;
-
         if (strcmp(command, "ADD") == 0) {
             char first[50], last[50];
             int ID;
@@ -61,7 +60,7 @@ int main() {
         }
         else if (strcmp(command, "QUIT") == 0) {
             CLEAR(head);
-            break;
+            running = false;
         }
         else {
             cout << "Invalid command." << endl;
@@ -71,19 +70,23 @@ int main() {
     return 0;
 }
 
-void ADD(Node*& head, Student* newStudent) {
+void ADD(Node* &head, Student* newStudent) {
     if (!head || newStudent->getID() < head->getStudent()->getID()) {
         Node* newNode = new Node(newStudent);
         newNode->setNext(head);
         head = newNode;
         return;
     }
-    ADD(head->getNext(), newStudent);
+
+    Node* next = head->getNext();
+    ADD(next, newStudent);
+    head->setNext(next);
 }
 
 void PRINT(Node* current) {
-    if (!current) return;
-
+    if (!current) {
+    	return;
+    }
     Student* s = current->getStudent();
     cout << s->getFirstName() << " " << s->getLastName()
          << ", " << s->getID() << ", "
@@ -92,4 +95,32 @@ void PRINT(Node* current) {
     PRINT(current->getNext());
 }
 
-//work on delete, average, and clear later
+Node* DELETE(Node* current, int ID) {
+    if (!current) {
+    	return nullptr;
+    }
+
+    if (current->getStudent()->getID() == ID) {
+        Node* nextNode = current->getNext();
+        delete current;  
+        return nextNode;
+    }
+
+    current->setNext(DELETE(current->getNext(), ID));
+    return current;
+}
+
+float AVERAGE(Node* current, int &count) {
+    if (!current) {
+    	return 0;
+    }
+    count++;
+    return current->getStudent()->getGPA() + AVERAGE(current->getNext(), count);
+}
+
+void CLEAR(Node* current) {
+    if (!current) return;
+
+    CLEAR(current->getNext());
+    delete current;
+}
