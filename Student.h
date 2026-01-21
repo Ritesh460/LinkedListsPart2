@@ -5,6 +5,7 @@
 #include <cstring>
 class Student{
   public:
+   //functions regarding inputs
    Student(const char* first_input, const char* last_input, int ID_input, float GPA_input);
    char* getFirstName();
    void setFirstName(const char* firstname_New);
@@ -16,6 +17,7 @@ class Student{
    void setGPA(float GPA_New);
    ~Student();
   private: 
+   //variables for inputs
    float GPA;
    int ID;
    char* first;

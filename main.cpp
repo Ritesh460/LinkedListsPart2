@@ -4,7 +4,7 @@
 #include "Node.h"
 #include "Student.h"
 using namespace std;
-
+//function prototypes
 void ADD(Node*& head, Student* newStudent);
 void PRINT(Node* current);
 Node* DELETE(Node* current, int id);
@@ -12,10 +12,12 @@ float AVERAGE(Node* current, int& count);
 void CLEAR(Node* current); //memory remember to do that this time
 
 int main() {
+    //head, command input, running true statement
     Node* head = nullptr;
     char command[20];
     bool running = true;
     while (running) {
+	//different command selection
         cout << "Enter command (ADD, PRINT, DELETE, AVERAGE, QUIT): ";
         cin >> command;
         if (strcmp(command, "ADD") == 0) {
@@ -60,7 +62,7 @@ int main() {
         }
         else if (strcmp(command, "QUIT") == 0) {
             CLEAR(head);
-            running = false;
+            running = false; //false to stop program
         }
         else {
             cout << "Invalid command." << endl;
@@ -69,7 +71,7 @@ int main() {
 
     return 0;
 }
-
+//ADD function
 void ADD(Node* &head, Student* newStudent) {
     if (!head || newStudent->getID() < head->getStudent()->getID()) {
         Node* newNode = new Node(newStudent);
@@ -82,7 +84,7 @@ void ADD(Node* &head, Student* newStudent) {
     ADD(next, newStudent);
     head->setNext(next);
 }
-
+//PRINT function
 void PRINT(Node* current) {
     if (!current) {
     	return;
@@ -94,7 +96,7 @@ void PRINT(Node* current) {
 
     PRINT(current->getNext());
 }
-
+//DELETE function
 Node* DELETE(Node* current, int ID) {
     if (!current) {
     	return nullptr;
@@ -109,7 +111,7 @@ Node* DELETE(Node* current, int ID) {
     current->setNext(DELETE(current->getNext(), ID));
     return current;
 }
-
+//AVERAGE function
 float AVERAGE(Node* current, int &count) {
     if (!current) {
     	return 0;
@@ -117,7 +119,7 @@ float AVERAGE(Node* current, int &count) {
     count++;
     return current->getStudent()->getGPA() + AVERAGE(current->getNext(), count);
 }
-
+//CLEAR functionm
 void CLEAR(Node* current) {
     if (!current) return;
 
